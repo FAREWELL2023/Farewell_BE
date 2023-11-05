@@ -1,6 +1,6 @@
 # serializers.py
 
-from .models import User
+from .models import User, UserProfile
 from rest_framework import serializers
 
 class UserSerializer(serializers.ModelSerializer):
@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
-        
+
     def create(self, validated_data):
         # 패스워드와 패스워드 확인 필드의 값을 가져옴
         password = validated_data.get('password')
@@ -27,3 +27,10 @@ class UserSerializer(serializers.ModelSerializer):
             password = password
         )
         return user
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    keyword = serializers.CharField(allow_blank=True)
+
+    class Meta:
+        model = UserProfile
+        fields = ['user', 'keyword']  # 필요한 필드를 여기에 추가

@@ -1,5 +1,5 @@
 # views.py
-from email.headerregistry import Group
+import json
 import jwt
 from rest_framework.views import APIView
 from .serializers import *
@@ -9,22 +9,42 @@ from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from django.shortcuts import render, get_object_or_404
 from config.settings import SECRET_KEY
+from .models import UserProfile, Keyword
 
 # 회원 가입
 class RegisterAPIView(APIView):
     def post(self, request):
+    
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
+
+            # 사용자 프로필 정보 저장
+            user_profile, created = UserProfile.objects.get_or_create(user=user)
+
+            # 클라이언트에서 전송된 keywords 배열 사용
+            keywords_data = request.data.get("keywords")
+
+            keywords = json.loads(keywords_data)
+
+            for keyword_str in keywords:
+                keyword, created = Keyword.objects.get_or_create(keyword=keyword_str)
+                user_profile.keywords.add(keyword)
+                # print(keyword)
             
+            # 키워드 이름 목록 가져오기
+            keyword_names = [keyword.keyword for keyword in user_profile.keywords.all()]
+
             # jwt 토큰 접근
             token = TokenObtainPairSerializer.get_token(user)
             refresh_token = str(token)
             access_token = str(token.access_token)
+
             res = Response(
                 {
                     "user": serializer.data,
                     "message": "register successs",
+                    "keywords": keyword_names,  # 키워드 이름 목록 반환
                     "token": {
                         "access": access_token,
                         "refresh": refresh_token,
