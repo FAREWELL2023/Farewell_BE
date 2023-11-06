@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
 
     'accounts',
+    'myfarewell',
+    'publicfarewell',
 ]
 
 REST_FRAMEWORK = {
