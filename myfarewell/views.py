@@ -145,14 +145,17 @@ class GetPatchAnswerView(APIView):
     def get(self, request, id):
         user = self.get_user(request)
 
-        answer = Answer.objects.get(user=user, id=id)
+        question = Question.objects.get(id=id)
+
+        answer = Answer.objects.get(user=user, question=question)
         answer_serializer = AnswerSerializer(answer, many=True)
 
-        question = answer.question
+        # question = answer.question
         question_serializer = QuestionSerializer(question, many=True)  # 질문 직렬화
 
         # 질문과 대답
         context = {
+            "question_id" : question.id,
             "answer_id" : answer.id,
             "question": question.text,
             "answer_content": answer.answer_content,
@@ -165,15 +168,17 @@ class GetPatchAnswerView(APIView):
         response = request.data.get('answer')
         
         try:
-            answer = Answer.objects.get(user=user, id=id)
-            question = answer.question
+            question = Question.objects.get(id=id)
+            
+            answer = Answer.objects.get(user=user, question=question)
             
             # 받은 대답으로 업데이트
             answer.answer_content = response
             answer.save()
             
             context = {
-                "id": answer.id,
+                "question_id" : question.id,
+                "answer_id" : answer.id,
                 "question": question.text,
                 "answer_content": response,
                 'message': '질문에 대한 답변이 업데이트되었습니다.',
