@@ -57,10 +57,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES' : [
-        # 'rest_framework.permissions.IsAuthenticated',
-        # 'rest_framework.permissions.IsAdminUser', # 관리자만 접근
-        'rest_framework.permissions.AllowAny', 
-        # 누구나 접근
+        'rest_framework.permissions.AllowAny',
+        # 또는 'rest_framework.permissions.AllowAny'와 같은 권한 클래스 선택
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE":100,
