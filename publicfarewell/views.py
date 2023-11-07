@@ -8,8 +8,9 @@ from .models import PublicFarewell
 from .serializers import PublicFarewellSerializer
 
 from django.shortcuts import get_object_or_404
-
+from .pagination import publicfarewellPagination
 
 class publicfarewellViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin,mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
     queryset = PublicFarewell.objects.all()
     serializer_class = PublicFarewellSerializer
+    pagination_class = publicfarewellPagination
