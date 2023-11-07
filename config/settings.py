@@ -59,8 +59,11 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES' : [
         # 'rest_framework.permissions.IsAuthenticated',
         # 'rest_framework.permissions.IsAdminUser', # 관리자만 접근
-        'rest_framework.permissions.AllowAny', # 누구나 접근
-    ]
+        'rest_framework.permissions.AllowAny', 
+        # 누구나 접근
+    ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE":100,
 }
 
 AUTH_USER_MODEL = 'accounts.User'
