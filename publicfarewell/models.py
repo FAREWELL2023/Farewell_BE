@@ -1,5 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import User
+
+# Create your models here.
+from django.db import models
+from accounts.models import User
 # Create your models here.
 def image_upload_path(instance, filename):
     return f'{instance.pk}/[filename]'
@@ -16,4 +19,4 @@ class PublicFarewell(models.Model):
     image = models.ImageField(upload_to=image_upload_path, blank=True, null=True)
     questions = models.TextField(max_length=500, null=True, blank=True)
     tag = models.ManyToManyField(Tag, blank=True)
-    owner = models.ForeignKey(accounts.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default='')
