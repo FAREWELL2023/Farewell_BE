@@ -1,10 +1,14 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
 from .views import *
 from . import views
 
 
 
 app_name="publicfarewell"
+
+default_router = routers.SimpleRouter()
+default_router.register("publicfarewell",publicfarewellViewSet, basename="publicfarewell")
 urlpatterns = [
-    path('', views.PublicFarewell_list_create),
+    path("",include(default_router.urls)),
 ]
