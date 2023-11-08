@@ -7,16 +7,21 @@ from accounts.models import User
 def image_upload_path(instance, filename):
     return f'{instance.pk}/[filename]'
 
-class Tag(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=15, null=True, blank=True)
+class Questions(models.Model):
+    id = models.AutoField(primary_key=True, null=False, blank=False)
+    question = models.TextField(max_length=500, null=False, blank=False, default='')
 
+
+    def __str__(self):
+        return self.question
+    
+    
+    
 class PublicFarewell(models.Model):
-    id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True, null=False, blank=False)
+    question = models.ForeignKey(Questions, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default='', null=True)
     name = models.CharField(max_length=10)
     content = models.TextField(max_length=300)
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to=image_upload_path, blank=True, null=True)
-    questions = models.TextField(max_length=500, null=True, blank=True)
-    tag = models.ManyToManyField(Tag, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default='')
