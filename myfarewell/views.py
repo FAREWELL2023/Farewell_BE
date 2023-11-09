@@ -8,11 +8,14 @@ from rest_framework.views import APIView
 from accounts.serializers import UserSerializer
 
 from config.settings import SECRET_KEY
-from .models import Question, Answer
+from .models import Question, Answer, Ending
 from accounts.models import User
 from rest_framework import status
-from .serializers import QuestionSerializer, AnswerSerializer
+from .serializers import QuestionSerializer, AnswerSerializer, EndingSerializer
 
+
+from rest_framework import viewsets, mixins
+from publicfarewell.models import PublicFarewell
 # 질문 리스트 보여주기
 class QuesListAPIView(APIView):
     def get(self, request):
@@ -116,7 +119,6 @@ class AnswerQuestionView(APIView):
 
 
 
-
 # 특정 회고록 조회 및 수정하기
 class GetPatchAnswerView(APIView):
 
@@ -187,3 +189,11 @@ class GetPatchAnswerView(APIView):
             return Response(context, status=status.HTTP_200_OK)
         except Answer.DoesNotExist:
             return Response({"message": "존재하지 않는 회고록입니다."}, status=status.HTTP_404_NOT_FOUND)
+        
+        
+class EndingListView(APIView):
+    def get(self, request):
+        endings = Ending.objects.all()
+        serializer = EndingSerializer(endings, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
