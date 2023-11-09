@@ -25,3 +25,4 @@ class PublicFarewell(models.Model):
     content = models.TextField(max_length=300)
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to=image_upload_path, blank=True, null=True)
+    hidden = models.TextField(default="False", null=False, blank=False)
