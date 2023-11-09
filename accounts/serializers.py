@@ -29,8 +29,8 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    keyword = serializers.CharField(allow_blank=True)
+    keywords = serializers.CharField(allow_blank=True)
 
     class Meta:
         model = UserProfile
-        fields = ['user', 'keyword']  # 필요한 필드를 여기에 추가
+        fields = ['user', 'keywords']  # 필요한 필드를 여기에 추가

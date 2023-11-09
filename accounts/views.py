@@ -1,5 +1,4 @@
 # views.py
-import json
 import jwt
 from rest_framework.views import APIView
 from .serializers import *
@@ -67,11 +66,28 @@ class AuthAPIView(APIView):
             # access token을 decode 해서 유저 id 추출 => 유저 식별
             access = request.COOKIES.get('access')  # 'access' 쿠키를 가져옴
             if access:
+
                 payload = jwt.decode(access, SECRET_KEY, algorithms=['HS256'])
                 pk = payload.get('user_id')
                 user = get_object_or_404(User, pk=pk)
                 serializer = UserSerializer(instance=user)
-                return Response(serializer.data, status=status.HTTP_200_OK)
+
+                
+                userProfile = UserProfile.objects.get(user=user)
+                user_profile_data = UserProfileSerializer(instance=userProfile).data
+
+                # 유저의 키워드 가져오기
+                user_keywords = [keyword.keyword for keyword in userProfile.keywords.all()]
+                user_profile_data['keywords'] = user_keywords
+
+                context = {
+                    "user": serializer.data,
+                    "keywords": user_profile_data["keywords"]
+                }
+
+                return Response(context, status=status.HTTP_200_OK)
+            
+
             else: # 로그인되지 않은 사용자에게 401 Unauthorized 응답과 메시지를 반환
                 return Response({"message": "로그인 되지 않은 사용자입니다."}, status=status.HTTP_401_UNAUTHORIZED)  
             
