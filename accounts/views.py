@@ -25,12 +25,12 @@ class RegisterAPIView(APIView):
             # 클라이언트에서 전송된 keywords 배열 사용
             keywords_data = request.data.get("keywords")
 
-            keywords = json.loads(keywords_data)
+            # keywords = json.loads(keywords_data)
 
-            for keyword_str in keywords:
+            for keyword_str in keywords_data:
                 keyword, created = Keyword.objects.get_or_create(keyword=keyword_str)
                 user_profile.keywords.add(keyword)
-                # print(keyword)
+            
             
             # 키워드 이름 목록 가져오기
             keyword_names = [keyword.keyword for keyword in user_profile.keywords.all()]

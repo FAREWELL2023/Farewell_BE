@@ -69,25 +69,19 @@ class AnswerQuestionView(APIView):
         answers = Answer.objects.filter(user=user)
         answer_serializer = AnswerSerializer(answers, many=True)
 
-        questions = []  # 질문을 저장할 빈 리스트
+        combined_data = []
         for answer in answers:
-            questions.append(answer.question)  # 각 대답의 질문을 가져와 리스트에 추가
+            combined_data.append({
+                "answer_id": answer.id,
+                "question": answer.question.text,
+                "answer_content": answer.answer_content,
+            })
 
-        question_serializer = QuestionSerializer(questions, many=True)  # 질문 직렬화
-
-        # 질문과 대답을 하나의 리스트로 병합
-        combined_data = [
-            {
-                "answer_id" : a.id,
-                "question": q.text,
-                "answer_content": a.answer_content,
-            }
-            for a, q in zip(answers, questions)
-        ]
-
-        return Response({
+        response_data = {
             'answers': combined_data,
-        }, status=status.HTTP_200_OK)
+        }
+
+        return Response(response_data, status=status.HTTP_200_OK)
 
 
     # 질문 작성하기
