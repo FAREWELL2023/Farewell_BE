@@ -24,3 +24,4 @@ class PublicFarewellViewSet(viewsets.ModelViewSet):
     queryset = PublicFarewell.objects.all()
     serializer_class = PublicFarewellSerializer
     permission_classes = [IsAdminOrReadOnly]
+    
