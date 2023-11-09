@@ -126,10 +126,19 @@ class AuthAPIView(APIView):
             token = TokenObtainPairSerializer.get_token(user)
             refresh_token = str(token)
             access_token = str(token.access_token)
+
+            userProfile = UserProfile.objects.get(user=user)
+            user_profile_data = UserProfileSerializer(instance=userProfile).data
+
+            # 유저의 키워드 가져오기
+            user_keywords = [keyword.keyword for keyword in userProfile.keywords.all()]
+            user_profile_data['keywords'] = user_keywords
+            
             res = Response(
                 {
                     "user": serializer.data,
                     "message": "login success",
+                    "keywords" : user_profile_data['keywords'],
                     "token": {
                         "access": access_token,
                         "refresh": refresh_token,
