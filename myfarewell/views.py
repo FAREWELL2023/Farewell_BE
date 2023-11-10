@@ -192,6 +192,9 @@ class GetPatchAnswerView(APIView):
         
         
 class EndingListView(APIView):
+    
+    queryset = Ending.objects.all()
+    
     def get(self, request):
         endings = Ending.objects.all()
         serializer = EndingSerializer(endings, many=True)
