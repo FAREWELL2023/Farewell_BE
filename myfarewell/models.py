@@ -28,7 +28,7 @@ class Answer(models.Model):
 class Ending(models.Model):
     questions = models.ForeignKey(Question, on_delete=models.CASCADE)
     answer_content = models.ForeignKey(Answer, on_delete=models.CASCADE)
-    progress_rate = models.IntegerField(default='0%', null=False, blank=False)
+    progress_rate = models.IntegerField(default=0, null=False, blank=False)
     
     #남이써준회고록질문+응답
     # 남이 써준 회고록 질문+응답
@@ -36,3 +36,8 @@ class Ending(models.Model):
     public_name = models.ForeignKey(PublicFarewell, on_delete=models.CASCADE, related_name='ending_public_name')
     public_content = models.ForeignKey(PublicFarewell, on_delete=models.CASCADE, related_name='ending_public_content')
     public_image = models.ForeignKey(PublicFarewell, on_delete=models.CASCADE, related_name='ending_public_image')
+    
+    
+    
+    def __str__(self):
+        return self.questions.text

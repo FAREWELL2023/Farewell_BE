@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Question, Answer, Ending
-
+from publicfarewell.serializers import PublicFarewellSerializer
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
@@ -14,12 +14,15 @@ class AnswerSerializer(serializers.ModelSerializer):
 
 
 class EndingSerializer(serializers.ModelSerializer):
-    # 여기에서 ForeignKey 필드를 직접 가져와야 합니다.
-    questions = serializers.CharField(source='questions.text')
-    answer_content = serializers.CharField(source='answer_content.answer_content')
-    public_questions = serializers.CharField(source='public_questions.question')
-    public_name = serializers.CharField(source='public_name.name')
-    public_content = serializers.CharField(source='public_content.content')
+    progress_rate = serializers.SerializerMethodField()
+
+    def get_progress_rate(self, obj):
+        total_questions = Question.objects.count()
+        if total_questions > 0:
+            user_responses = Ending.objects.filter(answer_content__user=obj.answer_content.user).count()
+            return f"{(user_responses / total_questions) * 100:.2f}%"
+        return "0%"
+
 
     class Meta:
         model = Ending
