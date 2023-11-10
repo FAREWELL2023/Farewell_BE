@@ -2,7 +2,8 @@ from rest_framework import serializers
 from .models import *
 
 class PublicFarewellSerializer(serializers.ModelSerializer):
-    
+    question_text = serializers.CharField(source='question.question', read_only=True)
+
     class Meta:
         model = PublicFarewell
         fields = '__all__'
