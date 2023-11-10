@@ -10,7 +10,7 @@ def image_upload_path(instance, filename):
 class Questions(models.Model):
     id = models.AutoField(primary_key=True, null=False, blank=False)
     question = models.TextField(max_length=500, null=False, blank=False, default='')
-
+    
 
     def __str__(self):
         return self.question
@@ -25,4 +25,5 @@ class PublicFarewell(models.Model):
     content = models.TextField(max_length=300)
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to=image_upload_path, blank=True, null=True)
-    hidden = models.TextField(default="False", null=False, blank=False)
+    hidden = models.BooleanField(default="False", null=False, blank=False)
+    owner = models.BooleanField(default="False",null=False, blank=False)
