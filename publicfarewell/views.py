@@ -14,6 +14,11 @@ from rest_framework import permissions
 from rest_framework.permissions import AllowAny
 
 from .permissions import IsAdminOrReadOnly
+
+
+    
+
+
 class publicfarewellViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin,mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
     queryset = PublicFarewell.objects.all()
     serializer_class = PublicFarewellSerializer
@@ -25,3 +30,4 @@ class PublicFarewellViewSet(viewsets.ModelViewSet):
     serializer_class = PublicFarewellSerializer
     permission_classes = [IsAdminOrReadOnly]
     
+
