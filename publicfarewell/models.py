@@ -21,7 +21,7 @@ class PublicFarewell(models.Model):
     id = models.AutoField(primary_key=True, null=False, blank=False)
     question = models.ForeignKey(Questions, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default='', null=True)
-    name = models.CharField(max_length=10)
+    name = models.CharField(max_length=10, blank=True, null=True, default='익명')
     content = models.TextField(max_length=300)
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to=image_upload_path, blank=True, null=True)
