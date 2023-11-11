@@ -196,8 +196,7 @@ class EndingListView(APIView):
     queryset = Ending.objects.all()
     
     def get(self, request):
-        endings = self.get.queryset
+        endings = Ending.objects.all()
         serializer = EndingSerializer(endings, many=True)
-        print(serializer.data) 
         return Response(serializer.data, status=status.HTTP_200_OK)
     
