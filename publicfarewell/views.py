@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import viewsets, mixins
 
-from .models import PublicFarewell
-from .serializers import PublicFarewellSerializer
+from .models import PublicFarewell, PublicFarewell2
+from .serializers import PublicFarewellSerializer, PublicFarewell2Serializer
 
 from django.shortcuts import get_object_or_404
 from .pagination import publicfarewellPagination
@@ -29,5 +29,11 @@ class PublicFarewellViewSet(viewsets.ModelViewSet):
     queryset = PublicFarewell.objects.all()
     serializer_class = PublicFarewellSerializer
     permission_classes = [IsAdminOrReadOnly]
+    
+    
+class publicfarewell2ViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin,mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
+    queryset = PublicFarewell2.objects.all()
+    serializer_class = PublicFarewell2Serializer
+    pagination_class = publicfarewellPagination
     
 
