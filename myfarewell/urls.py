@@ -11,6 +11,6 @@ urlpatterns = [
     path("", AnswerQuestionView.as_view()),
     path("question/", QuesListAPIView.as_view()),
     path("<int:id>/", GetPatchAnswerView.as_view()),
-    path("ending/", EndingListView.as_view()),
+    path("ending/", EndingListView.as_view(), name='ending_list'),
 
 ]

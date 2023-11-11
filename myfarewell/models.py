@@ -4,6 +4,8 @@ from django.db import models
 from django.db import models
 from accounts.models import User
 from publicfarewell.models import PublicFarewell
+from django.dispatch import receiver
+from django.db.models.signals import post_save, post_delete
 
 # def image_upload_path(instance, filename):
 #     return f'{instance.pk}/[filename]'
@@ -21,10 +23,26 @@ class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     answer_content = models.TextField(max_length=500,null=True,blank=True)  # 사용자의 답변
     answered_at = models.DateTimeField(auto_now_add=True)
-
+    # answer_count = models.IntegerField()
+    
+    
     def __str__(self):
         return f"Answer by {self.user.username} to '{self.question.text}'"
 
+        # Answer 모델에 대한 post_save signal 핸들러
+        # @receiver(post_save, sender=Answer)
+        # def update_answer_count(sender, instance, **kwargs):
+        #     question = instance.question
+        #     question.answer_count = Answer.objects.filter(question=question).count()
+        #     question.save()
+
+        # # Answer 모델에 대한 post_delete signal 핸들러
+        # @receiver(post_delete, sender=Answer)
+        # def update_answer_count_on_delete(sender, instance, **kwargs):
+        #     question = instance.question
+        #     question.answer_count = Answer.objects.filter(question=question).count()
+        #     question.save()
+    
 class Ending(models.Model):
     questions = models.ForeignKey(Question, on_delete=models.CASCADE)
     answer_content = models.ForeignKey(Answer, on_delete=models.CASCADE)

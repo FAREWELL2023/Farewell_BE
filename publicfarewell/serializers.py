@@ -35,7 +35,7 @@ class PublicFarewellSerializer(serializers.ModelSerializer):
     class Meta:
         model = PublicFarewell
         fields = '__all__'
-        read_only_field = ['id','created_at','question','hidden','owner','name']
+        read_only_field = ['id','created_at','question','hidden','owner']
         
     image = serializers.ImageField(use_url=True, required=False)
     
